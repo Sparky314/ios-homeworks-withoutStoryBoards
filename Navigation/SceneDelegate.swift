@@ -12,9 +12,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
-        // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
-        // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
+        
         guard let windowScene = (scene as? UIWindowScene) else { return }
         
         window = UIWindow(frame: windowScene.coordinateSpace.bounds)
@@ -53,17 +51,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     func createFeedViewController() -> UINavigationController {
         let feedViewController = FeedViewController()
-        let icon = UIImage(systemName: "doc.richtext")
-        feedViewController.title = "Лента"
-        feedViewController.tabBarItem = UITabBarItem(title: "Лента", image: icon, tag: 0)
+        let icon = UIImage(systemName: "house.fill")
+        feedViewController.title = "Feed"
+        feedViewController.tabBarItem = UITabBarItem(title: "Feed", image: icon, tag: 0)
         return UINavigationController(rootViewController: feedViewController)
     }
     
     func createProfileViewController() -> UINavigationController {
     let profileViewController = ProfileViewController()
-    let icon = UIImage(systemName: "person.circle")
-    profileViewController.title = "Профиль"
-    profileViewController.tabBarItem = UITabBarItem(title: "Профиль", image: icon, tag: 1)
+    let icon = UIImage(systemName: "person.fill")
+    profileViewController.tabBarItem = UITabBarItem(title: "Profile", image: icon, tag: 1)
     return UINavigationController(rootViewController: profileViewController)
     }
     

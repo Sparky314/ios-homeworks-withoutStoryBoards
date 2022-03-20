@@ -13,7 +13,7 @@ class InfoViewController: UIViewController {
         let button = UIButton()  // Кнопка
         button.backgroundColor = .systemBlue  // Цвет кнопки
         button.layer.cornerRadius = 12   // Скруглим
-        button.setTitle("Жмякни", for: .normal)  // Текст кнопки
+        button.setTitle("Tap it!", for: .normal)  // Текст кнопки
         button.setTitleColor(.white, for: .normal)  // Цвет текста
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)   // Делаем жирным
         button.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)  // Добавляем Action
@@ -45,15 +45,16 @@ class InfoViewController: UIViewController {
     }
         
     private func showAlert() {  // Создаем кнопку Alert.
-        let alertController = UIAlertController(title: "ВНИМАНИЕ!", message: "За тобой сейчас кто-то стоит!", preferredStyle: .alert) // Создаем AlertController
-        let okButton = UIAlertAction(title: "ОК", style: .default) { Action in
-                print("Нажата кнопка ОК") // При нажатии в консоль должно выводиться сообщение.
+        let alertController = UIAlertController(title: "Attention!", message: "Red pill or blue pill?", preferredStyle: .alert) // Создаем AlertController
+        
+        let redButton = UIAlertAction(title: "RED", style: .default) { Action in
+                print("Нажата кнопка RED") // При нажатии в консоль должно выводиться сообщение.
         }
-        let exitButton = UIAlertAction(title: "Выход", style: .cancel) { Action in
-                print("Нажата кнопка Выход") // При нажатии в консоль должно выводиться сообщение.
+        let blueButton = UIAlertAction(title: "BLUE", style: .default) { Action in
+                print("Нажата кнопка BLUE") // При нажатии в консоль должно выводиться сообщение.
         }
-        alertController.addAction(okButton) // Действие кнопок
-        alertController.addAction(exitButton) // Действие кнопок
+        alertController.addAction(redButton) // Действие кнопок
+        alertController.addAction(blueButton) // Действие кнопок
         present(alertController, animated: true, completion: nil) // Выводим на экран
     }
 }
