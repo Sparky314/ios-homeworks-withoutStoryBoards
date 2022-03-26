@@ -11,7 +11,7 @@ class PostViewController: UIViewController {
     
    var titlePost = Post(title: "My Post")
     
-    private lazy var infoButton = UIBarButtonItem(image: UIImage(systemName: "info.circle.fill"), style: .plain, target: self, action: #selector(clickButton))
+    private lazy var infoButton = UIBarButtonItem(image: UIImage(systemName: "info.circle"), style: .plain, target: self, action: #selector(clickButton))
     
     private func setupView() {
         self.view.backgroundColor = .lightGray

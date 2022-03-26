@@ -7,77 +7,46 @@
 
 import UIKit
 
-class ProfileHeaderView: UIView {
+final class ProfileHeaderView: UIView {
 
+    // Аватар
     private lazy var avatarImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "hell_cat")
         imageView.layer.borderWidth = 3.0
         imageView.layer.masksToBounds = false
         imageView.layer.borderColor = UIColor.white.cgColor
-        imageView.layer.cornerRadius = 75
+        imageView.layer.cornerRadius = 45
         imageView.contentMode = .scaleAspectFit
         imageView.clipsToBounds = true
-        imageView.translatesAutoresizingMaskIntoConstraints = true
+        imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
     
-    private lazy var labelStackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .vertical
-        stackView.distribution = .fillEqually
-        stackView.spacing = 40
-        return stackView
-    }()
-    
-    private lazy var stackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .horizontal
-        stackView.spacing = 16
-        return stackView
-    }()
-    
+    // Строка с именем пользователя
     private lazy var fullNameLabel: UILabel = {
         let label = UILabel()
         label.text = "Hell Cat"
         label.textColor = .black
         label.font = UIFont(name: "Helvetica-Bold", size: 18)
-        label.translatesAutoresizingMaskIntoConstraints = true
+        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
+    // Строка статуса
     private lazy var statusLabel: UILabel = {
         let label = UILabel()
-        label.text = "Rocking"
+        label.text = "Rocking!"
         label.textColor = .gray
         label.font = UIFont(name: "Helvetica-Regular", size: 14)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
-    private lazy var textField: UITextField = {
-        let textField = UITextField()
-        textField.isHidden = true
-        textField.backgroundColor = .white
-        textField.font = UIFont(name: "Helvetica-Regular", size: 15)
-        textField.textColor = .black
-        textField.layer.cornerRadius = 12
-        textField.layer.borderWidth = 1
-        textField.layer.borderColor = UIColor.black.cgColor
-        textField.textAlignment = .center
-        textField.clearButtonMode = .whileEditing // Кнопка «Очистить» при редактировании
-         textField.clearButtonMode = .unlessEditing // не появляется во время редактирования, кнопка редактирования появляется после редактирования
-         textField.clearButtonMode = .always
-        textField.translatesAutoresizingMaskIntoConstraints = false
-        return textField
-    }()
-    
+    // Кнопка изменения статуса
     private lazy var setStatusButton: UIButton = {
         let button = UIButton()
         button.setTitle("Show status", for: .normal)
-        button.setTitle("Set status", for: .selected)
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor = .systemBlue
         button.layer.cornerRadius = 4
@@ -88,7 +57,27 @@ class ProfileHeaderView: UIView {
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
-        
+    
+    // Вертикальный стек для строк имени пользователя и статуса
+    private lazy var labelStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.distribution = .fillEqually
+        stackView.spacing = 10
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
+    
+    // Горизонтальный стек для аватара и лейблов
+    private lazy var infoStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.spacing = 20
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
+    
+    // Верхний констрейнт для кнопки
     private var buttonTopConstraint: NSLayoutConstraint?
     
     override init(frame: CGRect) {
@@ -100,32 +89,35 @@ class ProfileHeaderView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // Отображение себя
     private func drawSelf() {
-        self.addSubview(stackView)
-        self.addSubview(textField)
-        self.addSubview(setStatusButton)
-    
-        self.stackView.addArrangedSubview(avatarImageView)
-        self.stackView.addArrangedSubview(labelStackView)
-        self.labelStackView.addArrangedSubview(fullNameLabel)
-        self.labelStackView.addArrangedSubview(statusLabel)
+        self.addSubview(self.infoStackView)// добавляем на вью гориз. стек
+        self.addSubview(self.setStatusButton)// добавляем на вью кнопку изменения статуса
+        self.infoStackView.addArrangedSubview(avatarImageView)// добавляем аватар в горизонтальный стек
+        self.infoStackView.addArrangedSubview(labelStackView)// добавляем вертикальный стек в горизонтальный стек
+        self.labelStackView.addArrangedSubview(fullNameLabel)// добавляем имя пользователя в вертикальный стек
+        self.labelStackView.addArrangedSubview(statusLabel)// добавляем статус в вертикальный стек
         
-        let stackViewTopConstraint = self.stackView.topAnchor.constraint(equalTo: self.topAnchor, constant: 16)
-        let stackViewLeadingConstraint = self.stackView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16)
-        let stackViewTrailingConstraint = self.stackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16)
-        let avatarImageViewRatioConstraint = self.avatarImageView.heightAnchor.constraint(equalTo: self.avatarImageView.widthAnchor, multiplier: 1.0)
+        // констрейнты
+        let topConstraint = self.infoStackView.topAnchor.constraint(equalTo: self.topAnchor, constant: 16)
+        let leadingConstraint = self.infoStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16)
+        let trailingConstraint = self.infoStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16)
         
-        self.buttonTopConstraint = self.setStatusButton.topAnchor.constraint(equalTo: self.stackView.bottomAnchor, constant: 16)
+        let imageViewAspectRatio = self.avatarImageView.heightAnchor.constraint(equalTo: self.avatarImageView.widthAnchor, multiplier: 1.0)
+        
+        self.buttonTopConstraint = self.setStatusButton.topAnchor.constraint(equalTo: self.infoStackView.bottomAnchor, constant: 16)
         self.buttonTopConstraint?.priority = UILayoutPriority(rawValue: 999)
         
-        let buttonLeadingConstraint = self.setStatusButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16)
-        let buttonTrailingConstraint = self.setStatusButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16)
-        let buttonHeightConstraint = self.setStatusButton.heightAnchor.constraint(equalToConstant: 50)
+        let buttonLeadingConstraint = self.setStatusButton.leadingAnchor.constraint(equalTo: self.infoStackView.leadingAnchor)
+        let buttonTrailingConstraint = self.setStatusButton.trailingAnchor.constraint(equalTo: self.infoStackView.trailingAnchor)
         let buttonBottomConstraint = self.setStatusButton.bottomAnchor.constraint(equalTo: self.bottomAnchor)
-        NSLayoutConstraint.activate([stackViewTopConstraint, stackViewLeadingConstraint, stackViewTrailingConstraint, avatarImageViewRatioConstraint, self.buttonTopConstraint, buttonLeadingConstraint, buttonTrailingConstraint, buttonHeightConstraint, buttonBottomConstraint].compactMap({$0}))
+        let buttonHeightConstraint = self.setStatusButton.heightAnchor.constraint(equalToConstant: 50)
+        
+        NSLayoutConstraint.activate([topConstraint, leadingConstraint, trailingConstraint, imageViewAspectRatio, self.buttonTopConstraint, buttonLeadingConstraint, buttonTrailingConstraint, buttonBottomConstraint, buttonHeightConstraint].compactMap({$0}))
     }
     
     @objc private func didTapStatusButton() {
+        // если статус задан, то мы его выводим в консоль
         if let status = self.statusLabel.text {
             print(status)
         }

@@ -47,7 +47,7 @@ class InfoViewController: UIViewController {
     private func showAlert() {  // Создаем кнопку Alert.
         let alertController = UIAlertController(title: "Attention!", message: "Red pill or blue pill?", preferredStyle: .alert) // Создаем AlertController
         
-        let redButton = UIAlertAction(title: "RED", style: .default) { Action in
+        let redButton = UIAlertAction(title: "RED", style: .destructive) { Action in
                 print("Нажата кнопка RED") // При нажатии в консоль должно выводиться сообщение.
         }
         let blueButton = UIAlertAction(title: "BLUE", style: .default) { Action in

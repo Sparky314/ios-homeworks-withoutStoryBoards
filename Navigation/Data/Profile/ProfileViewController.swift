@@ -19,9 +19,8 @@ class ProfileViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .lightGray
         self.setupNavigationBar()
-        self.viewWillLayoutSubviews()
+        self.setupView()
     }
     
     func setupNavigationBar() {
@@ -29,14 +28,16 @@ class ProfileViewController: UIViewController {
         self.navigationItem.title = "Profile"
     }
     
-    override func viewWillLayoutSubviews() {
-        self.view.addSubview(self.profileHeaderView)
-        self.profileHeaderView.backgroundColor = .lightGray
-        let topConstraint = self.profileHeaderView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor)
+   func setupView() {
+       self.view.backgroundColor = .white
+       self.view.addSubview(self.profileHeaderView)// добавляем хедер
+       
+       let topConstraint = self.profileHeaderView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor)
         let leadingConstraint = self.profileHeaderView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor)
         let trailingConstraint = self.profileHeaderView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor)
-        self.heightConstraint = self.profileHeaderView.heightAnchor.constraint(equalToConstant: 455)
+        self.heightConstraint = self.profileHeaderView.heightAnchor.constraint(equalToConstant: 170)
+       
         NSLayoutConstraint.activate([topConstraint, leadingConstraint, trailingConstraint, self.heightConstraint].compactMap({$0}))
     }
-
 }
+

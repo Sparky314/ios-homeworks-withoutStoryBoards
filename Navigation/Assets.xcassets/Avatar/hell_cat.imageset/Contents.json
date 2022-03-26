@@ -1,15 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "hell_cat.jpeg",
+      "filename" : "hell_cat@0,25x.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "hell_cat.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "filename" : "hell_cat.jpeg",
       "idiom" : "universal",
       "scale" : "3x"
     }
