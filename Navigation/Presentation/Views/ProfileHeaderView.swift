@@ -118,11 +118,11 @@ final class ProfileHeaderView: UIView {
             self.addSubview(self.infoStackView)// добавляем на вью гориз. стек
 //            self.addSubview(self.textField)
             self.addSubview(self.setStatusButton)// добавляем на вью кнопку изменения статуса
-            self.infoStackView.addArrangedSubview(avatarImageView)// добавляем аватар в горизонтальный стек
-            self.infoStackView.addArrangedSubview(labelStackView)// добавляем вертикальный стек в горизонтальный стек
+            self.infoStackView.addArrangedSubview(self.avatarImageView)// добавляем аватар в горизонтальный стек
+            self.infoStackView.addArrangedSubview(self.labelStackView)// добавляем вертикальный стек в горизонтальный стек
             self.infoStackView.addSubview(self.textField)
-            self.labelStackView.addArrangedSubview(fullNameLabel)// добавляем имя пользователя в вертикальный стек
-            self.labelStackView.addArrangedSubview(statusLabel)// добавляем статус в вертикальный стек
+            self.labelStackView.addArrangedSubview(self.fullNameLabel)// добавляем имя пользователя в вертикальный стек
+            self.labelStackView.addArrangedSubview(self.statusLabel)// добавляем статус в вертикальный стек
             
             // констрейнты
             let topConstraint = self.infoStackView.topAnchor.constraint(equalTo: self.topAnchor, constant: 16)
