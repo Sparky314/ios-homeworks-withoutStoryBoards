@@ -18,6 +18,7 @@
 		A568FA6727DE8B1000FAB961 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A568FA6627DE8B1000FAB961 /* SceneDelegate.swift */; };
 		A568FA6E27DE8B1600FAB961 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A568FA6D27DE8B1600FAB961 /* Assets.xcassets */; };
 		A568FA7127DE8B1600FAB961 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A568FA6F27DE8B1600FAB961 /* LaunchScreen.storyboard */; };
+		A5B4BAD627F49AB00016D571 /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5B4BAD527F49AB00016D571 /* LogInViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +35,7 @@
 		A568FA6D27DE8B1600FAB961 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A568FA7027DE8B1600FAB961 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A568FA7227DE8B1600FAB961 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A5B4BAD527F49AB00016D571 /* LogInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,6 +71,7 @@
 			isa = PBXGroup;
 			children = (
 				A536DA1227F2353100F6393B /* FeedViewController.swift */,
+				A5B4BAD527F49AB00016D571 /* LogInViewController.swift */,
 				A536DA1627F2356C00F6393B /* ProfileViewController.swift */,
 				A536DA1427F2354F00F6393B /* PostViewController.swift */,
 				A536DA1827F2358400F6393B /* InfoViewController.swift */,
@@ -200,6 +203,7 @@
 				A568FA6727DE8B1000FAB961 /* SceneDelegate.swift in Sources */,
 				A536DA1927F2358400F6393B /* InfoViewController.swift in Sources */,
 				A536DA2027F237DC00F6393B /* Post.swift in Sources */,
+				A5B4BAD627F49AB00016D571 /* LogInViewController.swift in Sources */,
 				A536DA1127F234DA00F6393B /* ProfileHeaderView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

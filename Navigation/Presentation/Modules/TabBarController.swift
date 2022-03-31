@@ -22,7 +22,7 @@ class TabBarController: UITabBarController {
         let feedIcon = UIImage(systemName: "house.fill")
         feed.tabBarItem = UITabBarItem(title: "Feed", image: feedIcon, tag: 0)
         
-        let profile = ProfileViewController()
+        let profile = LogInViewController()
         let profileIcon = UIImage(systemName: "person.fill")
         profile.tabBarItem = UITabBarItem(title: "Profile", image: profileIcon, tag: 1)
         
