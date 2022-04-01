@@ -140,7 +140,7 @@ class LogInViewController: UIViewController {
         let loginHeightConstraint = self.login.heightAnchor.constraint(equalToConstant: 50)
         
         //password
-        let passwordTopConstraint = self.password.topAnchor.constraint(equalTo: self.login.bottomAnchor)
+        let passwordTopConstraint = self.password.topAnchor.constraint(equalTo: self.login.bottomAnchor, constant: -1)
         let passwordLeadingConstraint = self.password.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor)
         let passwordTrailingConstraint = self.password.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor)
         let passwordHeightConstraint = self.password.heightAnchor.constraint(equalToConstant: 50)
