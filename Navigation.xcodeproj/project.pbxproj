@@ -19,6 +19,8 @@
 		A568FA6E27DE8B1600FAB961 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A568FA6D27DE8B1600FAB961 /* Assets.xcassets */; };
 		A568FA7127DE8B1600FAB961 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A568FA6F27DE8B1600FAB961 /* LaunchScreen.storyboard */; };
 		A5B4BAD627F49AB00016D571 /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5B4BAD527F49AB00016D571 /* LogInViewController.swift */; };
+		A5B4BAD827F7245D0016D571 /* Posts.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5B4BAD727F7245D0016D571 /* Posts.swift */; };
+		A5B4BADA27F748940016D571 /* PostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5B4BAD927F748940016D571 /* PostTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +38,8 @@
 		A568FA7027DE8B1600FAB961 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A568FA7227DE8B1600FAB961 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A5B4BAD527F49AB00016D571 /* LogInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
+		A5B4BAD727F7245D0016D571 /* Posts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Posts.swift; sourceTree = "<group>"; };
+		A5B4BAD927F748940016D571 /* PostTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,6 +96,8 @@
 			isa = PBXGroup;
 			children = (
 				A536DA1F27F237DC00F6393B /* Post.swift */,
+				A5B4BAD727F7245D0016D571 /* Posts.swift */,
+				A5B4BAD927F748940016D571 /* PostTableViewCell.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -201,10 +207,12 @@
 				A536DA1327F2353100F6393B /* FeedViewController.swift in Sources */,
 				A536DA1727F2356C00F6393B /* ProfileViewController.swift in Sources */,
 				A568FA6727DE8B1000FAB961 /* SceneDelegate.swift in Sources */,
+				A5B4BAD827F7245D0016D571 /* Posts.swift in Sources */,
 				A536DA1927F2358400F6393B /* InfoViewController.swift in Sources */,
 				A536DA2027F237DC00F6393B /* Post.swift in Sources */,
 				A5B4BAD627F49AB00016D571 /* LogInViewController.swift in Sources */,
 				A536DA1127F234DA00F6393B /* ProfileHeaderView.swift in Sources */,
+				A5B4BADA27F748940016D571 /* PostTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

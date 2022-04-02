@@ -9,7 +9,7 @@ import UIKit
 
 class PostViewController: UIViewController {
 
-    lazy var post = Post(title: "")
+    lazy var post = eComStation
         
         private lazy var infoButton = UIBarButtonItem(image: UIImage(systemName: "info.circle"), style: .plain, target: self, action: #selector(clickButton))
         

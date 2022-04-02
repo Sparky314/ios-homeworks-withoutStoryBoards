@@ -59,7 +59,7 @@ class FeedViewController: UIViewController {
     
     @objc private func buttonAction() {
             let postViewController = PostViewController()
-            postViewController.post = Post(title: "My Post")
+            postViewController.post = eComStation
             self.navigationController?.pushViewController(postViewController, animated: true)
     }
 
