@@ -7,7 +7,7 @@
 
 import UIKit
 
-class LogInViewController: UIViewController {
+class LogInViewController: UIViewController, UITextFieldDelegate {
     
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -88,6 +88,8 @@ class LogInViewController: UIViewController {
    
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.login.delegate = self //чтобы убирать клавиатуру после нажатия return
+        self.password.delegate = self //чтобы убирать клавиатуру после нажатия return
         self.view.backgroundColor = .white
         self.navigationController?.navigationBar.isHidden = true
         self.setupView()
@@ -193,5 +195,62 @@ class LogInViewController: UIViewController {
         let profileViewController = ProfileViewController()
         self.navigationController?.pushViewController(profileViewController, animated: true)
     }
-
+    // MARK: Клавиатура
+    // Добавлено соответствие протоколу UITextFieldDelegate
+    
+    // Вызывается, если нажать return на клавиатуре
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    
+    // Подписка на уведомления на появления клавиатуры и её ухода с экрана
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        let nc = NotificationCenter.default
+        nc.addObserver(self, selector: #selector(keyBoardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        nc.addObserver(self, selector: #selector(keyBoardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    // Отписка от уведомлений на появления клавиатуры и её ухода с экрана после закрытия контроллера
+    override func viewDidDisappear(_ animated: Bool) {
+        let nc = NotificationCenter.default
+        nc.removeObserver(self, name: LogInViewController.keyboardWillShowNotification, object: nil)
+        nc.removeObserver(self, name: LogInViewController.keyboardWillHideNotification, object: nil)
+        super.viewDidDisappear(animated)
+    }
+    // добавляем жест tap в любом месте view
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if let _ = touches.first {
+            view.endEditing(true)
+        }
+        super.touchesBegan(touches, with: event)
+    }
+    
+    var keyboardDismissTapGesture: UIGestureRecognizer?
+    
+    // Если клавиатура появилась, добавляем распознователь жестов
+    @objc private func keyBoardWillShow(notification: NSNotification) {
+        if keyboardDismissTapGesture == nil {
+            keyboardDismissTapGesture = UITapGestureRecognizer(
+                target: self, action: #selector(dismissKeyBoard)
+            )
+            keyboardDismissTapGesture?.cancelsTouchesInView = false
+            self.view.addGestureRecognizer(keyboardDismissTapGesture!)
+        }
+    }
+    // Обработка жеста tap в любом месте view, скрывающего клавиатуру
+    @objc private func dismissKeyBoard(sender: UITapGestureRecognizer){
+        view.endEditing(true)
+    }
+    
+    // Если клавиатура скрылась, удаляем распознователь жестов
+    @objc private func keyBoardWillHide(notification: NSNotification) {
+        if keyboardDismissTapGesture != nil {
+            self.view.removeGestureRecognizer(keyboardDismissTapGesture!)
+            keyboardDismissTapGesture = nil
+        }
+    }
 }//END
+
