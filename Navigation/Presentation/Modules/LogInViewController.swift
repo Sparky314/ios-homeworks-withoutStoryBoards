@@ -228,7 +228,7 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         super.touchesBegan(touches, with: event)
     }
     
-    var keyboardDismissTapGesture: UIGestureRecognizer?
+    private var keyboardDismissTapGesture: UIGestureRecognizer?
     
     // Если клавиатура появилась, добавляем распознователь жестов
     @objc private func keyBoardWillShow(notification: NSNotification) {
