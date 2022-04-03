@@ -56,9 +56,6 @@ final class ProfileHeaderView: UIView {
             textField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: textField.frame.height))
             textField.leftViewMode = .always
             textField.textAlignment = .left
-            textField.clearButtonMode = .whileEditing
-            textField.clearButtonMode = .unlessEditing
-            textField.clearButtonMode = .always
             textField.isHidden = true
             textField.translatesAutoresizingMaskIntoConstraints = false
             textField.addTarget(self, action: #selector(self.statusTextChanged), for: .editingChanged)
@@ -100,12 +97,14 @@ final class ProfileHeaderView: UIView {
             stackView.translatesAutoresizingMaskIntoConstraints = false
             return stackView
         }()
-        
-        // Верхний констрейнт для кнопки
-        private var buttonTopConstraint: NSLayoutConstraint?
-        
+                 
         override init(frame: CGRect) {
             super.init(frame: frame)
+            self.textField.delegate = self //чтобы закрывать клавиатуру нажатием return
+            // создаём жест, чтобы закрывать клавиатуру при нажатии за её пределами, но в пределах самого ProfileHeaderView
+            let tap = UITapGestureRecognizer(target: self, action: #selector(UIView.endEditing))
+            tap.cancelsTouchesInView = false
+            self.addGestureRecognizer(tap)
             self.drawSelf()
         }
 
@@ -131,9 +130,7 @@ final class ProfileHeaderView: UIView {
             
             let imageViewAspectRatio = self.avatarImageView.heightAnchor.constraint(equalTo: self.avatarImageView.widthAnchor, multiplier: 1.0)
             
-            self.buttonTopConstraint = self.setStatusButton.topAnchor.constraint(equalTo: self.textField.bottomAnchor, constant: 20)
-            self.buttonTopConstraint?.priority = UILayoutPriority(rawValue: 999)
-            
+            let buttonTopConstraint = self.setStatusButton.topAnchor.constraint(equalTo: self.textField.bottomAnchor, constant: 20)
             let buttonLeadingConstraint = self.setStatusButton.leadingAnchor.constraint(equalTo: self.infoStackView.leadingAnchor)
             let buttonTrailingConstraint = self.setStatusButton.trailingAnchor.constraint(equalTo: self.infoStackView.trailingAnchor)
             let buttonBottomConstraint = self.setStatusButton.bottomAnchor.constraint(equalTo: self.bottomAnchor)
@@ -143,24 +140,60 @@ final class ProfileHeaderView: UIView {
             let trailingTextConstraint = self.textField.trailingAnchor.constraint(equalTo: self.infoStackView.trailingAnchor)
             let heightTextConstraint = self.textField.heightAnchor.constraint(equalToConstant: 40)
             
-            NSLayoutConstraint.activate([topConstraint, leadingConstraint, trailingConstraint, imageViewAspectRatio, self.buttonTopConstraint, buttonLeadingConstraint, buttonTrailingConstraint, buttonBottomConstraint, buttonHeightConstraint, topTextConstraint, leadingTextConstraint, trailingTextConstraint, heightTextConstraint].compactMap({$0}))
+            NSLayoutConstraint.activate([topConstraint, leadingConstraint, trailingConstraint, imageViewAspectRatio, buttonTopConstraint, buttonLeadingConstraint, buttonTrailingConstraint, buttonBottomConstraint, buttonHeightConstraint, topTextConstraint, leadingTextConstraint, trailingTextConstraint, heightTextConstraint].compactMap({$0}))
             
         }
-        
+    
+    // функция для внесения текста из текстового поля в лейбл статуса
     @objc func statusTextChanged(_ textField: UITextField) {
-        if let text = textField.text {
-            statusText = text
+        if var text = textField.text {
+            switch text {
+            case "": break
+            default:
+                let firstChar = text[text.startIndex]
+                switch firstChar {
+                    case " ":
+                        text = rmSpace(text: text)
+                        if text.isEmpty {
+                            break
+                        } else {
+                            fallthrough
+                        }
+                    default: self.statusText = text
+                }
+            }
         }
     }
     
+    // функция для удаления пробелов в начале строки
+    func rmSpace(text: String) -> String {
+        var clipText = text
+        repeat {
+           clipText.remove(at: clipText.startIndex)
+        } while !clipText.isEmpty && clipText[clipText.startIndex] == " "
+        return clipText
+    }
+        
     @objc private func didTapStatusButton() { // функция по редактированию статуса, очень топорная
         self.textField.becomeFirstResponder()
         self.textField.isHidden.toggle()
         if self.textField.isHidden {
-            setStatusButton.setTitle("Set status", for: .normal)
+            self.setStatusButton.setTitle("Set status", for: .normal)
+            self.textField.endEditing(true)
         } else {
-            setStatusButton.setTitle("Submit", for: .normal)
+            self.textField.text = ""
+            self.setStatusButton.setTitle("Submit", for: .normal)
         }
         self.statusLabel.text = statusText
     }
 }
+
+extension ProfileHeaderView: UITextFieldDelegate {
+    // закрывает клавиатуру  и устанавливает статус при нажатии на return
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.didTapStatusButton()
+        textField.resignFirstResponder()
+        return true
+    }
+}
+
