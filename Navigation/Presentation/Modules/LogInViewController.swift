@@ -240,7 +240,7 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
             self.view.addGestureRecognizer(keyboardDismissTapGesture!)
         }
         if let kbFrameSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-            self.scrollView.contentOffset = CGPoint(x: 0, y: kbFrameSize.height * 0.8)
+            self.scrollView.contentOffset = CGPoint(x: 0, y: kbFrameSize.height * 0.1)
             self.scrollView.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: kbFrameSize.height, right: 0)
             }
     }
