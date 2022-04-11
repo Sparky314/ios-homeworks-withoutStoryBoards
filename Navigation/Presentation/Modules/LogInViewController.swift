@@ -187,7 +187,7 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
             
             loginButtonTopConstraint,
             loginButtonHeightConstraint,
-            loginButtonWidthConstraint].compactMap({$0}))
+            loginButtonWidthConstraint])
 
         }
     
@@ -230,7 +230,7 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
     
     private var keyboardDismissTapGesture: UIGestureRecognizer?
     
-    // Если клавиатура появилась, добавляем распознователь жестов
+    // Если клавиатура появилась, добавляем распознователь жестов и избегаем перекрытие клавиатурой полей ввода
     @objc private func keyBoardWillShow(notification: NSNotification) {
         if keyboardDismissTapGesture == nil {
             keyboardDismissTapGesture = UITapGestureRecognizer(
@@ -239,6 +239,10 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
             keyboardDismissTapGesture?.cancelsTouchesInView = false
             self.view.addGestureRecognizer(keyboardDismissTapGesture!)
         }
+        if let kbFrameSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+            self.scrollView.contentOffset = CGPoint(x: 0, y: kbFrameSize.height * 0.8)
+            self.scrollView.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: kbFrameSize.height, right: 0)
+            }
     }
     // Обработка жеста tap в любом месте view, скрывающего клавиатуру
     @objc private func dismissKeyBoard(sender: UITapGestureRecognizer){
@@ -252,5 +256,7 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
             keyboardDismissTapGesture = nil
         }
     }
+    
+    
 }//END
 
