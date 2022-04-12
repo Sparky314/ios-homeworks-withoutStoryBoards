@@ -1,5 +1,5 @@
 //
-//  ProfileHorizontalPhotosFeedCell.swift
+//  PhotosCollectionViewCell.swift
 //  Navigation
 //
 //  Created by Sergey on 11.04.2022.
@@ -7,13 +7,13 @@
 
 import UIKit
 
-class ProfileHorizontalPhotosFeedCell: UICollectionViewCell {
-        
-    var photoImageView: UIImageView = {
+class PhotosCollectionViewCell: UICollectionViewCell {
+    
+    lazy var photoImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.layer.cornerRadius = 6
         imageView.contentMode = .scaleAspectFill
         imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.backgroundColor = .white
         imageView.clipsToBounds = true
         return imageView
     }()
@@ -21,7 +21,14 @@ class ProfileHorizontalPhotosFeedCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.contentView.addSubview(self.photoImageView)
-        
+        self.setConstraints()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func setConstraints() {
         let topConstraint = self.photoImageView.topAnchor.constraint(equalTo: self.topAnchor)
         let leadingConstraint = self.photoImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor)
         let trailingConstraint = self.photoImageView.trailingAnchor.constraint(equalTo: self.trailingAnchor)
@@ -30,10 +37,6 @@ class ProfileHorizontalPhotosFeedCell: UICollectionViewCell {
         NSLayoutConstraint.activate([
             topConstraint, leadingConstraint, bottomConstraint, trailingConstraint
         ])
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
     
     override func prepareForReuse() {

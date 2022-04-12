@@ -20,6 +20,7 @@ class ProfileViewController: UIViewController {
         table.delegate = self
         table.dataSource = self
         table.translatesAutoresizingMaskIntoConstraints = false
+        table.register(PhotosTableViewCell.self, forCellReuseIdentifier: "PhotosTableViewCell")
         table.register(PostTableViewCell.self, forCellReuseIdentifier: "PostTableViewCell")
         return table
     }()
@@ -30,6 +31,11 @@ class ProfileViewController: UIViewController {
         super.viewDidLoad()
         self.setupNavigationBar()
         self.createTable()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.navigationBar.isHidden = true
     }
         
     private func setupNavigationBar() {
@@ -60,20 +66,24 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
     //MARK: - UITableViewDataSource
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return data.count
+        return self.data.count + 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "PostTableViewCell", for: indexPath) as! PostTableViewCell
         
-        cell.titleLabel.text = self.data[indexPath.row].title
-        cell.postImageView.image = UIImage(named: self.data[indexPath.row].image)
-        cell.descLabel.text = self.data[indexPath.row].description
-        cell.authorLabel.text = "Автор: " + self.data[indexPath.row].author
-        cell.likesCounterLabel.text = "Likes: " + String(self.data[indexPath.row].likes)
-        cell.viewesCounterLabel.text = "Views: " + String(self.data[indexPath.row].views)
-
-        return cell
+        if indexPath.row == 0 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "PhotosTableViewCell", for: indexPath) as! PhotosTableViewCell
+            return cell
+        } else {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "PostTableViewCell", for: indexPath) as! PostTableViewCell
+            cell.titleLabel.text = self.data[indexPath.row - 1].title
+            cell.postImageView.image = UIImage(named: self.data[indexPath.row - 1].image)
+            cell.descLabel.text = self.data[indexPath.row - 1].description
+            cell.authorLabel.text = "Автор: " + self.data[indexPath.row - 1].author
+            cell.likesCounterLabel.text = "Likes: " + String(self.data[indexPath.row - 1].likes)
+            cell.viewesCounterLabel.text = "Views: " + String(self.data[indexPath.row - 1].views)
+            return cell
+        }
     }
     
     //MARK: - UITableViewDelegate
@@ -87,6 +97,13 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
         headerView.backgroundColor = .systemGray5
         headerView.heightAnchor.constraint(equalToConstant: 220).isActive = true
         return headerView
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath.row == 0 {
+            let photoVC = PhotosViewController()
+            self.navigationController?.pushViewController(photoVC, animated: true)
+        }
     }
 }
 
