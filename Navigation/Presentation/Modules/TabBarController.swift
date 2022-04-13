@@ -16,7 +16,7 @@ class TabBarController: UITabBarController {
     }
     
     private func setupView(){
-        UITabBar.appearance().backgroundColor = .white
+        UITabBar.appearance().backgroundColor = .systemGray4
         
         let feed = FeedViewController()
         let feedIcon = UIImage(systemName: "house.fill")
@@ -26,9 +26,15 @@ class TabBarController: UITabBarController {
         let profileIcon = UIImage(systemName: "person.fill")
         profile.tabBarItem = UITabBarItem(title: "Profile", image: profileIcon, tag: 1)
         
+        let gesture = GesturesViewController()
+        let gestureIcon = UIImage(systemName: "hand.tap.fill")
+        gesture.tabBarItem = UITabBarItem(title: "Gestures", image: gestureIcon, tag: 2)
+        
+        
         self.viewControllers = [
             UINavigationController(rootViewController: feed),
-            UINavigationController(rootViewController: profile)
+            UINavigationController(rootViewController: profile),
+            UINavigationController(rootViewController: gesture)
         ]
     }
 
