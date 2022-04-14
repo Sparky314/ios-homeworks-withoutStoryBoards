@@ -36,9 +36,7 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         logo.translatesAutoresizingMaskIntoConstraints = false
         return logo
     }()
-
-
-
+    
     private lazy var login: UITextField = {
         let login = UITextField()
         login.backgroundColor = .systemGray6
@@ -73,6 +71,20 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         pass.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
         return pass
     }()
+    
+    private lazy var warningLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Password should contain at least 6 symbols."
+        label.textColor = UIColor(named: "WarningColor")
+        label.textAlignment = .center
+        label.isHidden = true
+        label.font = UIFont(name: "Helvetica-Regular", size: 5)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private var loginButtonTopConstraint: NSLayoutConstraint?
+    private var loginButtonHeightConstraint: NSLayoutConstraint?
 
     private lazy var loginButton: UIButton = {
         let button = UIButton()
@@ -81,7 +93,7 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         button.setTitleColor(.white, for: .normal)
         button.layer.cornerRadius = 10
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.addTarget(self, action: #selector(goToProfile), for: .touchUpInside)
+        button.addTarget(self, action: #selector(didTapLoginButton), for: .touchUpInside)
 
         return button
     }()
@@ -148,8 +160,8 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         let passwordHeightConstraint = self.password.heightAnchor.constraint(equalToConstant: 50)
         
         //loginButton
-        let loginButtonTopConstraint = self.loginButton.topAnchor.constraint(equalTo: self.password.bottomAnchor, constant: 16)
-        let loginButtonHeightConstraint = self.loginButton.heightAnchor.constraint(equalToConstant: 50)
+        self.loginButtonTopConstraint = self.loginButton.topAnchor.constraint(equalTo: self.password.bottomAnchor, constant: 16)
+        self.loginButtonHeightConstraint = self.loginButton.heightAnchor.constraint(equalToConstant: 50)
         let loginButtonWidthConstraint = self.loginButton.widthAnchor.constraint(equalTo: self.password.widthAnchor)
         
         //contraints activation
@@ -185,16 +197,54 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
             passwordTrailingConstraint,
             passwordHeightConstraint,
             
-            loginButtonTopConstraint,
-            loginButtonHeightConstraint,
+            self.loginButtonTopConstraint,
+            self.loginButtonHeightConstraint,
             loginButtonWidthConstraint].compactMap({$0}))
 
         }
     
-    @objc private func goToProfile(){
-        let profileViewController = ProfileViewController()
-        self.navigationController?.pushViewController(profileViewController, animated: true)
+    @objc private func didTapLoginButton(){
+        
+        let topLabelConstraint = self.warningLabel.topAnchor.constraint(equalTo: self.password.bottomAnchor, constant: 12)
+        let leadingLabelConstraint = self.warningLabel.leadingAnchor.constraint(equalTo: self.password.leadingAnchor)
+        let heightLabelConstraint = self.warningLabel.heightAnchor.constraint(equalToConstant: 20)
+        let trailingLabelConstraint = self.warningLabel.trailingAnchor.constraint(equalTo: self.password.trailingAnchor)
+        self.loginButtonTopConstraint = self.loginButton.topAnchor.constraint(equalTo: self.warningLabel.bottomAnchor, constant: 16)
+        self.loginButtonHeightConstraint = self.loginButton.heightAnchor.constraint(equalToConstant: 50)
+        
+        let email = isValidEmail(userEmail: login.text!)
+        if email == false {
+            let alert = UIAlertController(title: "Attention!", message: "Invalid email address.", preferredStyle: UIAlertController.Style.alert)
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }
+
+        let password = validPassword(userPassword: password.text!)
+        if password == false {
+            self.warningLabel.isHidden = false
+            self.scrollView.addSubview(self.warningLabel)
+            self.loginButtonTopConstraint?.isActive = false
+            NSLayoutConstraint.activate([topLabelConstraint, leadingLabelConstraint, trailingLabelConstraint, heightLabelConstraint, self.loginButtonTopConstraint, self.loginButtonHeightConstraint].compactMap( {$0} ))
+        } else {
+            self.warningLabel.removeFromSuperview()
+            NSLayoutConstraint.deactivate([topLabelConstraint, leadingLabelConstraint, trailingLabelConstraint, heightLabelConstraint].compactMap( {$0} ))
+            self.warningLabel.isHidden = true
+        }
+        
+        if self.login.text == "" {
+            self.login.backgroundColor = UIColor(named: "WarningColor")
+        } else if self.password.text == "" {
+            self.password.backgroundColor = UIColor(named: "WarningColor")
+        } else if self.login.text == "sergey.davlitshin@gmail.com" && self.password.text == "$trongPassword" {
+            let profileViewController = ProfileViewController()
+            self.navigationController?.pushViewController(profileViewController, animated: true)
+        } else {
+            let alert = UIAlertController(title: "Attention!", message: "Wrong data have been submitted.", preferredStyle: UIAlertController.Style.alert)
+            alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+            self.present(alert, animated: true, completion: nil)
+        }
     }
+        
     // MARK: Клавиатура
     // Добавлено соответствие протоколу UITextFieldDelegate
     
@@ -230,7 +280,7 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
     
     private var keyboardDismissTapGesture: UIGestureRecognizer?
     
-    // Если клавиатура появилась, добавляем распознователь жестов
+    // Если клавиатура появилась, добавляем распознователь жестов и избегаем перекрытие клавиатурой полей ввода
     @objc private func keyBoardWillShow(notification: NSNotification) {
         if keyboardDismissTapGesture == nil {
             keyboardDismissTapGesture = UITapGestureRecognizer(
@@ -239,6 +289,10 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
             keyboardDismissTapGesture?.cancelsTouchesInView = false
             self.view.addGestureRecognizer(keyboardDismissTapGesture!)
         }
+        if let kbFrameSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+            self.scrollView.contentOffset = CGPoint(x: 0, y: kbFrameSize.height * 0.1)
+            self.scrollView.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: kbFrameSize.height, right: 0)
+            }
     }
     // Обработка жеста tap в любом месте view, скрывающего клавиатуру
     @objc private func dismissKeyBoard(sender: UITapGestureRecognizer){
@@ -252,5 +306,19 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
             keyboardDismissTapGesture = nil
         }
     }
+    
+    func validPassword(userPassword : String) -> Bool {
+        let passwordReg =  (".{6,}")
+        let passwordTesting = NSPredicate(format: "SELF MATCHES %@", passwordReg)
+        return passwordTesting.evaluate(with: userPassword)
+    }
+    
+    func isValidEmail(userEmail: String) -> Bool {
+        let emailRegEx = "(?:[a-z0-9!#$%\\&'*+/=?\\^_`{|}~-]+(?:\\.[a-z0-9!#$%\\&'*+/=?\\^_`{|}"+"~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\"+"x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-"+"z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5"+"]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-"+"9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21"+"-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])"
+
+        let emailTest = NSPredicate(format:"SELF MATCHES[c] %@", emailRegEx)
+        return emailTest.evaluate(with: userEmail)
+    }
+    
 }//END
 
