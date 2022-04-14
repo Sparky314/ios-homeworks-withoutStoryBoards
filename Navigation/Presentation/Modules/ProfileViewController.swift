@@ -35,7 +35,6 @@ class ProfileViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationController?.navigationBar.isHidden = true
     }
         
     private func setupNavigationBar() {
@@ -103,8 +102,13 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
         if indexPath.row == 0 {
             let photoVC = PhotosViewController()
             self.navigationController?.pushViewController(photoVC, animated: true)
+        } else {
+            let postVC = PostViewController()
+            postVC.post = data[indexPath.row - 1]
+            self.navigationController?.pushViewController(postVC, animated: true)
         }
     }
+    
 }
 
 
