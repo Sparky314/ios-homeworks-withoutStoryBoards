@@ -80,8 +80,8 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
             cell.postImageView.image = UIImage(named: self.data[indexPath.row - 1].image)
             cell.descLabel.text = self.data[indexPath.row - 1].description
             cell.authorLabel.text = "Автор: " + self.data[indexPath.row - 1].author
-            cell.likesCounterLabel.text = "Likes: " + String(self.data[indexPath.row - 1].likes)
-            cell.viewesCounterLabel.text = "Views: " + String(self.data[indexPath.row - 1].views)
+            cell.likesCounterLabel.text = String(self.data[indexPath.row - 1].likes)
+            cell.viewesCounterLabel.text = String(self.data[indexPath.row - 1].views)
             return cell
         }
     }
