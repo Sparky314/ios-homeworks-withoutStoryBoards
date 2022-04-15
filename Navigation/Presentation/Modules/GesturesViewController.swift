@@ -138,7 +138,6 @@ class GesturesViewController: UIViewController {
     }
 
     @objc private func didTapButton() {
-        print("Close!")
         self.backView.isHidden = true
         self.closeButton.isHidden = true
         self.isExpanded = false
