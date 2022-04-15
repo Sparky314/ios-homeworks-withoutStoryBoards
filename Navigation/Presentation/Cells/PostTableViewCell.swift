@@ -9,6 +9,8 @@ import UIKit
 
 class PostTableViewCell: UITableViewCell {
     
+    var post = Post (title: "", author: "", description: "", image: "", likes: 0, views: 0)
+    
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
@@ -88,8 +90,6 @@ class PostTableViewCell: UITableViewCell {
         return likes
     }()
     
-    private var isLiked: Bool = false
-    
     private var likeTapGesture = UITapGestureRecognizer()
     
     private lazy var viewsContersStack: UIStackView = {
@@ -126,12 +126,6 @@ class PostTableViewCell: UITableViewCell {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
     }
     
     private func setupCell() {
@@ -171,15 +165,18 @@ class PostTableViewCell: UITableViewCell {
     
     @objc private func didTapLike(_ gestureRecognizer: UITapGestureRecognizer) {
         guard self.likeTapGesture === gestureRecognizer else { return }
-        let likesQty = Int(self.likesCounterLabel.text!)
-        if isLiked {
+        if self.post.isLiked {
             self.likesIcon.tintColor = .black
-            self.likesCounterLabel.text = String(likesQty! - 1)
-            self.isLiked.toggle()
+            self.likesCounterLabel.textColor = .black
+            self.post.likes -= 1
+            self.likesCounterLabel.text = String(self.post.likes)
+            self.post.isLiked.toggle()
         } else {
             self.likesIcon.tintColor = UIColor(named: "MyColor")
-            self.likesCounterLabel.text = String(likesQty! + 1)
-            self.isLiked.toggle()
+            self.likesCounterLabel.textColor = UIColor(named: "MyColor")
+            self.post.likes += 1
+            self.likesCounterLabel.text = String(self.post.likes)
+            self.post.isLiked.toggle()
         }
     }
 }

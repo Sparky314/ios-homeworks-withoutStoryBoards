@@ -9,7 +9,7 @@ import UIKit
 
 class PostViewController: UIViewController {
     
-    lazy var post = Post()
+    var post = Post(title: "", author:  "", description: "", image: "", likes: 0, views: 0)
         
     private lazy var infoButton = UIBarButtonItem(image: UIImage(systemName: "info.circle"), style: .plain, target: self, action: #selector(clickButton))
     
@@ -29,9 +29,23 @@ class PostViewController: UIViewController {
         self.createTable()
     }
     
+    init(post: Post) {
+        super.init(nibName: nil, bundle: nil)
+        self.post = post
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         setupView()
         self.navigationItem.rightBarButtonItem = infoButton
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        tableView.reloadData()
+        self.post.views += 1
     }
     
     private func createTable() {
@@ -67,12 +81,25 @@ extension PostViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "PostTableViewCell", for: indexPath) as! PostTableViewCell
-        cell.titleLabel.text = self.post.title
-        cell.postImageView.image = UIImage(named: self.post.image)
-        cell.descLabel.text = self.post.description
-        cell.authorLabel.text = "Автор: " + self.post.author
-        cell.likesCounterLabel.text = String(self.post.likes)
-        cell.viewesCounterLabel.text = String(self.post.views)
+        cell.post = self.post
+        cell.titleLabel.text = cell.post.title
+        cell.postImageView.image = UIImage(named: cell.post.image)
+        cell.descLabel.text = cell.post.description
+        cell.authorLabel.text = "Автор: " + cell.post.author
+        cell.likesCounterLabel.text = String(cell.post.likes)
+        cell.viewesCounterLabel.text = String(cell.post.views)
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if let myCell = cell as? PostTableViewCell {
+            if myCell.post.isLiked {
+                myCell.likesIcon.tintColor = UIColor(named: "MyColor")
+                myCell.likesCounterLabel.textColor = UIColor(named: "MyColor")
+            } else {
+                myCell.likesIcon.tintColor = .black
+                myCell.likesCounterLabel.textColor = .black
+            }
+        }
     }
 }

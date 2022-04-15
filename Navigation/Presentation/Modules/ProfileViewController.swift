@@ -33,8 +33,8 @@ class ProfileViewController: UIViewController {
         self.createTable()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+    override func viewDidAppear(_ animated: Bool) {
+        self.tableView.reloadData()
     }
         
     private func setupNavigationBar() {
@@ -75,12 +75,13 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
             return cell
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "PostTableViewCell", for: indexPath) as! PostTableViewCell
-            cell.titleLabel.text = self.data[indexPath.row - 1].title
-            cell.postImageView.image = UIImage(named: self.data[indexPath.row - 1].image)
-            cell.descLabel.text = self.data[indexPath.row - 1].description
-            cell.authorLabel.text = "Автор: " + self.data[indexPath.row - 1].author
-            cell.likesCounterLabel.text = String(self.data[indexPath.row - 1].likes)
-            cell.viewesCounterLabel.text = String(self.data[indexPath.row - 1].views)
+            cell.post = self.data[indexPath.row - 1]
+            cell.titleLabel.text = cell.post.title
+            cell.postImageView.image = UIImage(named: cell.post.image)
+            cell.descLabel.text = cell.post.description
+            cell.authorLabel.text = "Автор: " + cell.post.author
+            cell.likesCounterLabel.text = String(cell.post.likes)
+            cell.viewesCounterLabel.text = String(cell.post.views)
             return cell
         }
     }
@@ -103,12 +104,22 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
             let photoVC = PhotosViewController()
             self.navigationController?.pushViewController(photoVC, animated: true)
         } else {
-            let postVC = PostViewController()
-            postVC.post = data[indexPath.row - 1]
+            let postVC = PostViewController(post: data[indexPath.row - 1])
             self.navigationController?.pushViewController(postVC, animated: true)
         }
     }
     
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if let myCell = cell as? PostTableViewCell {
+            if myCell.post.isLiked {
+                myCell.likesIcon.tintColor = UIColor(named: "MyColor")
+                myCell.likesCounterLabel.textColor = UIColor(named: "MyColor")
+            } else {
+                myCell.likesIcon.tintColor = .black
+                myCell.likesCounterLabel.textColor = .black
+            }
+        }
+    }
 }
 
 
