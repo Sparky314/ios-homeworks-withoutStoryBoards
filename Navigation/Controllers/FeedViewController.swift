@@ -37,6 +37,7 @@ class FeedViewController: UIViewController {
     
     @objc private func buttonAction() {
         let postViewController = PostViewController()
+        postViewController.post = Post(title: "Мой пост")
         self.navigationController?.pushViewController(postViewController, animated: true)
     }
 }

@@ -57,6 +57,7 @@
 			children = (
 				A562D3BE27DF67AD000F63E0 /* FeedViewController.swift */,
 				A562D3C227DF6830000F63E0 /* PostViewController.swift */,
+				A562D3BD27DF67AD000F63E0 /* ProfileViewController.swift */,
 				A562D3C827DF7F7A000F63E0 /* InfoViewController.swift */,
 			);
 			path = Controllers;
