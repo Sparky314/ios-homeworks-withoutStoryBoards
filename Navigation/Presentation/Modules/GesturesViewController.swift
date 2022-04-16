@@ -30,7 +30,6 @@ class GesturesViewController: UIViewController {
         let image = UIImage(systemName: "multiply.circle.fill")
         button.setBackgroundImage(image, for: .normal)
         button.isHidden = true
-        button.alpha = 0
         button.tintColor = .white
         button.addTarget(self, action: #selector(self.didTapButton), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -120,7 +119,6 @@ class GesturesViewController: UIViewController {
     }
 
     @objc private func handleTapGesture(_ gestureRecognizer: UITapGestureRecognizer) {
-        guard self.tapGestureRecognizer === gestureRecognizer else { return }
         self.backView.isHidden = false
         self.closeButton.isHidden = false
         self.isExpanded = true
@@ -129,16 +127,10 @@ class GesturesViewController: UIViewController {
         UIView.animate(withDuration: 0.5) {
             self.backView.alpha = self.isExpanded ? 0.5 : 0
             self.view.layoutIfNeeded()
-        } completion: { _ in }
-        
-        UIView.animate(withDuration: 0.3, delay: 0.5) {
-            self.closeButton.alpha = self.isExpanded ? 1 : 0
-            self.view.layoutIfNeeded()
-        } completion: { _ in }
+        }
     }
 
     @objc private func didTapButton() {
-        print("Close!")
         self.backView.isHidden = true
         self.closeButton.isHidden = true
         self.isExpanded = false
@@ -147,11 +139,6 @@ class GesturesViewController: UIViewController {
         UIView.animate(withDuration: 0.5) {
             self.backView.alpha = self.isExpanded ? 0.5 : 0
             self.view.layoutIfNeeded()
-        } completion: { _ in }
-
-        UIView.animate(withDuration: 0.3, delay: 0.5) {
-            self.closeButton.alpha = self.isExpanded ? 1 : 0
-            self.view.layoutIfNeeded()
-        } completion: { _ in }
+        }
     }
 }
