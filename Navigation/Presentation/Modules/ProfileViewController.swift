@@ -95,7 +95,7 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = ProfileHeaderView()
         headerView.backgroundColor = .systemGray5
-        headerView.heightAnchor.constraint(equalToConstant: 220).isActive = true
+//        headerView.heightAnchor.constraint(equalToConstant: 220).isActive = true
         return headerView
     }
     

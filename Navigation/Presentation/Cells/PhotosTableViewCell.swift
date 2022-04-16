@@ -9,7 +9,7 @@ import UIKit
 
 class PhotosTableViewCell: UITableViewCell {
     
-    lazy var images = PhotosViewController().gallery
+    lazy var images: [UIImage] = (0...20).compactMap { UIImage(named: "\($0)") }
 
     private enum Constant {
         static let itemCount: CGFloat = 4
@@ -47,7 +47,6 @@ class PhotosTableViewCell: UITableViewCell {
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.clipsToBounds = true
-        imageView.target(forAction: #selector(arrowTapped), withSender: nil)
         return imageView
     }()
     
@@ -70,9 +69,6 @@ class PhotosTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupView()
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(arrowTapped))
-        arrow.isUserInteractionEnabled = true
-        arrow.addGestureRecognizer(tapGestureRecognizer)
     }
     
     required init?(coder: NSCoder) {
@@ -114,10 +110,6 @@ class PhotosTableViewCell: UITableViewCell {
         let needWidth = width - 4 * spacing
         let itemWidth = floor(needWidth / Constant.itemCount)
         return CGSize(width: itemWidth, height: itemWidth)
-    }
-    
-    @objc private func arrowTapped() {
-        print("Arrow pressed!")
     }
 }
 

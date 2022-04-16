@@ -124,6 +124,7 @@ final class ProfileHeaderView: UIView {
             self.labelStackView.addArrangedSubview(self.statusLabel)// добавляем статус в вертикальный стек
             
             // констрейнты
+            let heightContraint = self.heightAnchor.constraint(equalToConstant: 220)
             let topConstraint = self.infoStackView.topAnchor.constraint(equalTo: self.topAnchor, constant: 16)
             let leadingConstraint = self.infoStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16)
             let trailingConstraint = self.infoStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16)
@@ -140,7 +141,7 @@ final class ProfileHeaderView: UIView {
             let trailingTextConstraint = self.textField.trailingAnchor.constraint(equalTo: self.infoStackView.trailingAnchor)
             let heightTextConstraint = self.textField.heightAnchor.constraint(equalToConstant: 40)
             
-            NSLayoutConstraint.activate([topConstraint, leadingConstraint, trailingConstraint, imageViewAspectRatio, buttonTopConstraint, buttonLeadingConstraint, buttonTrailingConstraint, buttonBottomConstraint, buttonHeightConstraint, topTextConstraint, leadingTextConstraint, trailingTextConstraint, heightTextConstraint].compactMap({$0}))
+            NSLayoutConstraint.activate([heightContraint, topConstraint, leadingConstraint, trailingConstraint, imageViewAspectRatio, buttonTopConstraint, buttonLeadingConstraint, buttonTrailingConstraint, buttonBottomConstraint, buttonHeightConstraint, topTextConstraint, leadingTextConstraint, trailingTextConstraint, heightTextConstraint].compactMap({$0}))
             
         }
     
