@@ -63,7 +63,7 @@ final class ProfileHeaderView: UIView {
         }()
         
         private lazy var statusText: String = "Rocking!"
-    
+
         // Кнопка изменения статуса
         private lazy var setStatusButton: UIButton = {
             let button = UIButton()
@@ -141,7 +141,6 @@ final class ProfileHeaderView: UIView {
             let heightTextConstraint = self.textField.heightAnchor.constraint(equalToConstant: 40)
             
             NSLayoutConstraint.activate([topConstraint, leadingConstraint, trailingConstraint, imageViewAspectRatio, buttonTopConstraint, buttonLeadingConstraint, buttonTrailingConstraint, buttonBottomConstraint, buttonHeightConstraint, topTextConstraint, leadingTextConstraint, trailingTextConstraint, heightTextConstraint].compactMap({$0}))
-            
         }
     
     // функция для внесения текста из текстового поля в лейбл статуса
