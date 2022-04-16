@@ -9,8 +9,8 @@ import UIKit
 
 class PostViewController: UIViewController {
     
-    lazy var post = Post(title: "")
-    
+    var titlePost = Post(title: "My Post")
+  
     private lazy var infoButton = UIBarButtonItem(image: UIImage(systemName: "info.circle"), style: .plain, target: self, action: #selector(clickButton))
     
     private func setupView() {
@@ -26,7 +26,7 @@ class PostViewController: UIViewController {
     @objc private func clickButton() {  // Действие кнопки
         let infoViewController = InfoViewController()   // Создаем InfoViewController
         infoViewController.modalPresentationStyle = .automatic  //  должен показаться модально
-        infoViewController.navigationItem.title = "Информация"// почему-то не выводится
+        infoViewController.navigationItem.title = "Info"// почему-то не выводится
         present(infoViewController, animated: true, completion: nil) // Вызываем InfoViewController
     }
 }

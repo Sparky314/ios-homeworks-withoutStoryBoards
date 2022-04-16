@@ -13,7 +13,7 @@ class FeedViewController: UIViewController {
         let button = UIButton()
         button.backgroundColor = .systemBlue
         button.layer.cornerRadius = 12
-        button.setTitle("Перейти на пост", for: .normal)
+        button.setTitle("Read Post", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 24)
         button.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
