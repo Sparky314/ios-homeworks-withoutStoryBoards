@@ -9,6 +9,8 @@ import UIKit
 
 class PostTableViewCell: UITableViewCell {
     
+    var post = Post (title: "", author: "", description: "", image: "", likes: 0, views: 0)
+    
     private lazy var stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
@@ -57,8 +59,27 @@ class PostTableViewCell: UITableViewCell {
         stackView.axis = .horizontal
         stackView.distribution = .equalSpacing
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        
         return stackView
+    }()
+    
+    private lazy var likesContersStack: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.spacing = 5
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
+    
+    lazy var likesIcon: UIImageView = {
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        imageView.widthAnchor.constraint(equalToConstant: 20).isActive = true
+        imageView.contentMode = .scaleAspectFit
+        imageView.image = UIImage(systemName: "hand.thumbsup.fill")
+        imageView.tintColor = .black
+        imageView.isUserInteractionEnabled = true
+        return imageView
     }()
     
     lazy var likesCounterLabel: UILabel = {
@@ -67,6 +88,27 @@ class PostTableViewCell: UITableViewCell {
         likes.font = .systemFont(ofSize: 16)
         likes.textColor = .black
         return likes
+    }()
+    
+    private var likeTapGesture = UITapGestureRecognizer()
+    
+    private lazy var viewsContersStack: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.spacing = 5
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
+    
+    lazy var viewsIcon: UIImageView = {
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        imageView.widthAnchor.constraint(equalToConstant: 20).isActive = true
+        imageView.contentMode = .scaleAspectFit
+        imageView.image = UIImage(systemName: "eye.fill")
+        imageView.tintColor = .black
+        return imageView
     }()
     
     lazy var viewesCounterLabel: UILabel = {
@@ -86,12 +128,6 @@ class PostTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
-    
     private func setupCell() {
         self.contentView.addSubview(self.stackView)
         self.stackView.addArrangedSubview(self.titleLabel)
@@ -99,8 +135,12 @@ class PostTableViewCell: UITableViewCell {
         self.stackView.addArrangedSubview(self.descLabel)
         self.stackView.addArrangedSubview(self.authorLabel)
         self.stackView.addArrangedSubview(self.contersStack)
-        self.contersStack.addArrangedSubview(self.likesCounterLabel)
-        self.contersStack.addArrangedSubview(self.viewesCounterLabel)
+        self.contersStack.addArrangedSubview(self.likesContersStack)
+        self.likesContersStack.addArrangedSubview(self.likesIcon)
+        self.likesContersStack.addArrangedSubview(self.likesCounterLabel)
+        self.contersStack.addArrangedSubview(self.viewsContersStack)
+        self.viewsContersStack.addArrangedSubview(self.viewsIcon)
+        self.viewsContersStack.addArrangedSubview(self.viewesCounterLabel)
         
         let cellViewTopConstraint = self.stackView.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 16)
         let cellViewLeadingConstraint = self.stackView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 16)
@@ -118,5 +158,25 @@ class PostTableViewCell: UITableViewCell {
             imageViewWidthConstraint,
             imageViewHeightConstraint
         ])
+        
+        self.likeTapGesture.addTarget(self, action: #selector(didTapLike(_:)))
+        self.likesIcon.addGestureRecognizer(self.likeTapGesture)
+    }
+    
+    @objc private func didTapLike(_ gestureRecognizer: UITapGestureRecognizer) {
+        guard self.likeTapGesture === gestureRecognizer else { return }
+        if self.post.isLiked {
+            self.likesIcon.tintColor = .black
+            self.likesCounterLabel.textColor = .black
+            self.post.likes -= 1
+            self.likesCounterLabel.text = String(self.post.likes)
+            self.post.isLiked.toggle()
+        } else {
+            self.likesIcon.tintColor = UIColor(named: "MyColor")
+            self.likesCounterLabel.textColor = UIColor(named: "MyColor")
+            self.post.likes += 1
+            self.likesCounterLabel.text = String(self.post.likes)
+            self.post.isLiked.toggle()
+        }
     }
 }

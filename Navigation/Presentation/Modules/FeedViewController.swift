@@ -43,7 +43,7 @@ class FeedViewController: UIViewController {
     }
     
     private func setupView() {
-        self.view.backgroundColor = .lightGray
+        self.view.backgroundColor = .white
         self.title = "Feed"
         self.navigationController?.navigationBar.prefersLargeTitles = true
         self.view.addSubview(self.mainStack)
@@ -58,8 +58,7 @@ class FeedViewController: UIViewController {
     }
     
     @objc private func buttonAction() {
-            let postViewController = PostViewController()
-            postViewController.post = eComStation
+        let postViewController = PostViewController(post: eComStation)
             self.navigationController?.pushViewController(postViewController, animated: true)
     }
 

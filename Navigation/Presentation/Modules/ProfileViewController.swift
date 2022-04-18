@@ -8,15 +8,17 @@
 import UIKit
 
 class ProfileViewController: UIViewController {
-
+    
+    
     private lazy var profileHeaderView: ProfileHeaderView = {
         let view = ProfileHeaderView(frame: .zero)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
+    
     private lazy var tableView: UITableView = {
-        let table = UITableView(frame: .zero, style: .plain)
+        let table = UITableView(frame: .zero, style: .grouped)
         table.delegate = self
         table.dataSource = self
         table.translatesAutoresizingMaskIntoConstraints = false
@@ -29,25 +31,28 @@ class ProfileViewController: UIViewController {
             
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.setupNavigationBar()
         self.createTable()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        self.tableView.reloadData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationController?.navigationBar.isHidden = true
+        navigationController?.setNavigationBarHidden(true, animated: animated)
     }
-        
-    private func setupNavigationBar() {
-        self.navigationController?.navigationBar.isHidden = false
-        self.navigationController?.navigationBar.prefersLargeTitles = true
-        self.navigationItem.title = "Profile"
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: animated)
     }
         
     private func createTable() {
         self.view.addSubview(self.tableView)
+//        self.tableView.contentInsetAdjustmentBehavior = .never
         
-        let tableViewTopConstraint = self.tableView.topAnchor.constraint(equalTo: self.view.topAnchor)
+        let tableViewTopConstraint = self.tableView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor)
         let tableViewLeadingConstraint = self.tableView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor)
         let tableViewTrailingConstraint = self.tableView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor)
         let tableViewBottomConstraint = self.tableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
@@ -62,49 +67,70 @@ class ProfileViewController: UIViewController {
 }
 
 extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
+        
     
     //MARK: - UITableViewDataSource
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.data.count + 1
+        if section == 0 {
+            return 1
+        } else {
+            return self.data.count}
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        if indexPath.row == 0 {
+        if indexPath.section == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "PhotosTableViewCell", for: indexPath) as! PhotosTableViewCell
             return cell
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "PostTableViewCell", for: indexPath) as! PostTableViewCell
-            cell.titleLabel.text = self.data[indexPath.row - 1].title
-            cell.postImageView.image = UIImage(named: self.data[indexPath.row - 1].image)
-            cell.descLabel.text = self.data[indexPath.row - 1].description
-            cell.authorLabel.text = "Автор: " + self.data[indexPath.row - 1].author
-            cell.likesCounterLabel.text = "Likes: " + String(self.data[indexPath.row - 1].likes)
-            cell.viewesCounterLabel.text = "Views: " + String(self.data[indexPath.row - 1].views)
+            cell.post = self.data[indexPath.row]
+            cell.titleLabel.text = cell.post.title
+            cell.postImageView.image = UIImage(named: cell.post.image)
+            cell.descLabel.text = cell.post.description
+            cell.authorLabel.text = "Автор: " + cell.post.author
+            cell.likesCounterLabel.text = String(cell.post.likes)
+            cell.viewesCounterLabel.text = String(cell.post.views)
             return cell
         }
     }
     
     //MARK: - UITableViewDelegate
     
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-            return 246
+    func numberOfSections(in tableView: UITableView) -> Int {
+            return 2
         }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let headerView = ProfileHeaderView()
-        headerView.backgroundColor = .systemGray5
-//        headerView.heightAnchor.constraint(equalToConstant: 220).isActive = true
-        return headerView
+        if section == 0 {
+            let headerView = ProfileHeaderView()
+            headerView.backgroundColor = .systemGray5
+            return headerView
+        }
+        return nil
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.row == 0 {
+        if indexPath.section == 0 {
             let photoVC = PhotosViewController()
             self.navigationController?.pushViewController(photoVC, animated: true)
+        } else {
+            let postVC = PostViewController(post: data[indexPath.row])
+            self.navigationController?.pushViewController(postVC, animated: true)
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if let myCell = cell as? PostTableViewCell {
+            if myCell.post.isLiked {
+                myCell.likesIcon.tintColor = UIColor(named: "MyColor")
+                myCell.likesCounterLabel.textColor = UIColor(named: "MyColor")
+            } else {
+                myCell.likesIcon.tintColor = .black
+                myCell.likesCounterLabel.textColor = .black
+            }
         }
     }
 }
-
 

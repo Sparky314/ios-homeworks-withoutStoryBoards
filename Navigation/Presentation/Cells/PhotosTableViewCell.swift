@@ -14,14 +14,6 @@ class PhotosTableViewCell: UITableViewCell {
     private enum Constant {
         static let itemCount: CGFloat = 4
     }
-
-    private lazy var mainView: UIView = {
-        let view = UIView()
-        view.clipsToBounds = true
-        view.backgroundColor = .white
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
     
     private lazy var stackView: UIStackView = {
         let stack = UIStackView()
@@ -47,6 +39,7 @@ class PhotosTableViewCell: UITableViewCell {
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.clipsToBounds = true
+        imageView.target(forAction: #selector(arrowTapped), withSender: nil)
         return imageView
     }()
     
@@ -69,6 +62,9 @@ class PhotosTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupView()
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(arrowTapped))
+        arrow.isUserInteractionEnabled = true
+        arrow.addGestureRecognizer(tapGestureRecognizer)
     }
     
     required init?(coder: NSCoder) {
@@ -76,40 +72,39 @@ class PhotosTableViewCell: UITableViewCell {
     }
     
     private func setupView() {
-        self.backgroundColor = .systemGray6
-        self.contentView.addSubview(self.mainView)
-        self.mainView.addSubview(self.stackView)
+        self.backgroundColor = .white
+        self.contentView.addSubview(self.stackView)
         self.stackView.addArrangedSubview(self.titlePhotos)
         self.stackView.addArrangedSubview(self.arrow)
-        self.mainView.addSubview(photoCollectionView)
+        self.contentView.addSubview(photoCollectionView)
         activateConstraints()
     }
 
     private func activateConstraints() {
-        let topConstraint = self.mainView.topAnchor.constraint(equalTo: self.contentView.topAnchor)
-        let leadingConstraint = self.mainView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor)
-        let trailingConstraint = self.mainView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor)
-        let bottomConstraint = self.mainView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -16)
 
-        let stackViewTopConstraint = self.stackView.topAnchor.constraint(equalTo: self.mainView.topAnchor, constant: 12)
-        let stackViewLeadingConstraint = self.stackView.leadingAnchor.constraint(equalTo: self.mainView.leadingAnchor, constant: 12)
-        let stackViewTrailingConstraint = self.stackView.trailingAnchor.constraint(equalTo: self.mainView.trailingAnchor, constant: -12)
+        let stackViewTopConstraint = self.stackView.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 12)
+        let stackViewLeadingConstraint = self.stackView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 12)
+        let stackViewTrailingConstraint = self.stackView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -12)
 
         let arrowYAnchor = self.arrow.centerYAnchor.constraint(equalTo: self.titlePhotos.centerYAnchor)
 
         let photoCollectionViewTopConstraint = self.photoCollectionView.topAnchor.constraint(equalTo: self.stackView.bottomAnchor)
-        let photoCollectionViewLeadingConstraint = self.photoCollectionView.leadingAnchor.constraint(equalTo: self.mainView.leadingAnchor, constant: 12)
-        let photoCollectionViewTrailingConstraint = self.photoCollectionView.trailingAnchor.constraint(equalTo: self.mainView.trailingAnchor, constant: -12)
-        let photoCollectionViewConstraint = self.photoCollectionView.bottomAnchor.constraint(equalTo: self.mainView.bottomAnchor, constant: -12)
+        let photoCollectionViewLeadingConstraint = self.photoCollectionView.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 12)
+        let photoCollectionViewTrailingConstraint = self.photoCollectionView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -12)
+        let photoCollectionViewConstraint = self.photoCollectionView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -12)
         let photoCollectionViewHeight = self.photoCollectionView.heightAnchor.constraint(equalTo: self.contentView.widthAnchor, multiplier: 0.25)
 
-        NSLayoutConstraint.activate([topConstraint, leadingConstraint, bottomConstraint, trailingConstraint, stackViewTopConstraint, stackViewLeadingConstraint, stackViewTrailingConstraint,        photoCollectionViewTopConstraint, photoCollectionViewLeadingConstraint, photoCollectionViewTrailingConstraint, photoCollectionViewConstraint, photoCollectionViewHeight, arrowYAnchor])
+        NSLayoutConstraint.activate([stackViewTopConstraint, stackViewLeadingConstraint, stackViewTrailingConstraint, photoCollectionViewTopConstraint, photoCollectionViewLeadingConstraint, photoCollectionViewTrailingConstraint, photoCollectionViewConstraint, photoCollectionViewHeight, arrowYAnchor])
     }
     
     func itemSize(for width: CGFloat, with spacing: CGFloat) -> CGSize { // размеры ячейки
         let needWidth = width - 4 * spacing
         let itemWidth = floor(needWidth / Constant.itemCount)
         return CGSize(width: itemWidth, height: itemWidth)
+    }
+    
+    @objc private func arrowTapped() {
+        print("Arrow pressed!")
     }
 }
 
