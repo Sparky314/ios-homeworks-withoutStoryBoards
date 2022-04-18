@@ -18,7 +18,7 @@ class ProfileViewController: UIViewController {
     
     
     private lazy var tableView: UITableView = {
-        let table = UITableView(frame: .zero, style: .plain)
+        let table = UITableView(frame: .zero, style: .grouped)
         table.delegate = self
         table.dataSource = self
         table.translatesAutoresizingMaskIntoConstraints = false
@@ -52,7 +52,7 @@ class ProfileViewController: UIViewController {
         self.view.addSubview(self.tableView)
 //        self.tableView.contentInsetAdjustmentBehavior = .never
         
-        let tableViewTopConstraint = self.tableView.topAnchor.constraint(equalTo: self.view.topAnchor)
+        let tableViewTopConstraint = self.tableView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor)
         let tableViewLeadingConstraint = self.tableView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor)
         let tableViewTrailingConstraint = self.tableView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor)
         let tableViewBottomConstraint = self.tableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
@@ -72,17 +72,20 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
     //MARK: - UITableViewDataSource
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.data.count + 1
+        if section == 0 {
+            return 1
+        } else {
+            return self.data.count}
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        if indexPath.row == 0 {
+        if indexPath.section == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "PhotosTableViewCell", for: indexPath) as! PhotosTableViewCell
             return cell
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "PostTableViewCell", for: indexPath) as! PostTableViewCell
-            cell.post = self.data[indexPath.row - 1]
+            cell.post = self.data[indexPath.row]
             cell.titleLabel.text = cell.post.title
             cell.postImageView.image = UIImage(named: cell.post.image)
             cell.descLabel.text = cell.post.description
@@ -95,22 +98,25 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
     
     //MARK: - UITableViewDelegate
     
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-            return 246
+    func numberOfSections(in tableView: UITableView) -> Int {
+            return 2
         }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let headerView = ProfileHeaderView()
-        headerView.backgroundColor = .systemGray5
-        return headerView
+        if section == 0 {
+            let headerView = ProfileHeaderView()
+            headerView.backgroundColor = .systemGray5
+            return headerView
+        }
+        return nil
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.row == 0 {
+        if indexPath.section == 0 {
             let photoVC = PhotosViewController()
             self.navigationController?.pushViewController(photoVC, animated: true)
         } else {
-            let postVC = PostViewController(post: data[indexPath.row - 1])
+            let postVC = PostViewController(post: data[indexPath.row])
             self.navigationController?.pushViewController(postVC, animated: true)
         }
     }

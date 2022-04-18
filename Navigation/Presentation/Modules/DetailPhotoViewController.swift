@@ -71,7 +71,7 @@ class DetailPhotoViewController: UIViewController {
         let imageXConstraint = self.imageView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor)
         let imageYConstraint = self.imageView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor)
         
-        let buttonTopConstraint = self.closeButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 50)
+        let buttonTopConstraint = self.closeButton.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 25)
         let buttonTrailingConstraint = self.closeButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -10)
         let buttonHeightConstraint = self.closeButton.heightAnchor.constraint(equalToConstant: 40)
         let buttonWidthConstraint = self.closeButton.widthAnchor.constraint(equalToConstant: 40)
