@@ -43,7 +43,7 @@ class FeedViewController: UIViewController {
     }
     
     private func setupView() {
-        self.view.backgroundColor = .lightGray
+        self.view.backgroundColor = .white
         self.title = "Feed"
         self.navigationController?.navigationBar.prefersLargeTitles = true
         self.view.addSubview(self.mainStack)

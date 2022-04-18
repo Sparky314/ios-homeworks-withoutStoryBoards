@@ -103,9 +103,19 @@ class LogInViewController: UIViewController, UITextFieldDelegate {
         self.login.delegate = self //чтобы убирать клавиатуру после нажатия return
         self.password.delegate = self //чтобы убирать клавиатуру после нажатия return
         self.view.backgroundColor = .white
-        self.navigationController?.navigationBar.isHidden = true
+//        self.navigationController?.navigationBar.isHidden = true
         self.setupView()
         self.setupConstraints()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: animated)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: animated)
     }
 
     private func setupView(){

@@ -36,9 +36,13 @@ class DetailPhotoViewController: UIViewController {
         return button
     }()
     
+    private let tapGestureRecognizer = UITapGestureRecognizer()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setupView()
+        self.tapGestureRecognizer.addTarget(self, action: #selector(didTapButton))
+        self.imageView.addGestureRecognizer(self.tapGestureRecognizer)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -96,12 +100,12 @@ class DetailPhotoViewController: UIViewController {
         UIView.animate(withDuration: 0.5) {
             self.backView.alpha = 0.8
             self.view.layoutIfNeeded()
-        } completion: { _ in }
+        }
 
         UIView.animate(withDuration: 0.3, delay: 0.5) {
             self.closeButton.alpha = 1
             self.view.layoutIfNeeded()
-        } completion: { _ in }
+        }
     }
 }
 

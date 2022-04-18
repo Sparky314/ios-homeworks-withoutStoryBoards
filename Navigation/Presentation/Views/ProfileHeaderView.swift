@@ -16,7 +16,7 @@ final class ProfileHeaderView: UIView {
             imageView.layer.masksToBounds = false
             imageView.layer.borderWidth = 3.0
             imageView.layer.borderColor = UIColor.white.cgColor
-            imageView.layer.cornerRadius = 43
+            imageView.layer.cornerRadius = 50
             imageView.contentMode = .scaleAspectFit
             imageView.clipsToBounds = true
             imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -56,13 +56,13 @@ final class ProfileHeaderView: UIView {
             textField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: textField.frame.height))
             textField.leftViewMode = .always
             textField.textAlignment = .left
-            textField.isHidden = true
             textField.translatesAutoresizingMaskIntoConstraints = false
             textField.addTarget(self, action: #selector(self.statusTextChanged), for: .editingChanged)
             return textField
         }()
         
         private lazy var statusText: String = "Rocking!"
+    
 
         // Кнопка изменения статуса
         private lazy var setStatusButton: UIButton = {
@@ -84,7 +84,7 @@ final class ProfileHeaderView: UIView {
             let stackView = UIStackView()
             stackView.axis = .vertical
             stackView.distribution = .fillEqually
-            stackView.spacing = 10
+            stackView.spacing = 30
             stackView.translatesAutoresizingMaskIntoConstraints = false
             return stackView
         }()
@@ -93,7 +93,7 @@ final class ProfileHeaderView: UIView {
         private lazy var infoStackView: UIStackView = {
             let stackView = UIStackView()
             stackView.axis = .horizontal
-            stackView.spacing = 20
+            stackView.spacing = 16
             stackView.translatesAutoresizingMaskIntoConstraints = false
             return stackView
         }()
@@ -115,32 +115,34 @@ final class ProfileHeaderView: UIView {
         // Отображение себя
         private func drawSelf() {
             self.addSubview(self.infoStackView)// добавляем на вью гориз. стек
-//            self.addSubview(self.textField)
+            self.addSubview(self.textField)
             self.addSubview(self.setStatusButton)// добавляем на вью кнопку изменения статуса
             self.infoStackView.addArrangedSubview(self.avatarImageView)// добавляем аватар в горизонтальный стек
             self.infoStackView.addArrangedSubview(self.labelStackView)// добавляем вертикальный стек в горизонтальный стек
-            self.infoStackView.addSubview(self.textField)
             self.labelStackView.addArrangedSubview(self.fullNameLabel)// добавляем имя пользователя в вертикальный стек
             self.labelStackView.addArrangedSubview(self.statusLabel)// добавляем статус в вертикальный стек
             
             // констрейнты
-            let topConstraint = self.infoStackView.topAnchor.constraint(equalTo: self.topAnchor, constant: 16)
-            let leadingConstraint = self.infoStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16)
-            let trailingConstraint = self.infoStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16)
             
-            let imageViewAspectRatio = self.avatarImageView.heightAnchor.constraint(equalTo: self.avatarImageView.widthAnchor, multiplier: 1.0)
-            
-            let buttonTopConstraint = self.setStatusButton.topAnchor.constraint(equalTo: self.textField.bottomAnchor, constant: 20)
-            let buttonLeadingConstraint = self.setStatusButton.leadingAnchor.constraint(equalTo: self.infoStackView.leadingAnchor)
-            let buttonTrailingConstraint = self.setStatusButton.trailingAnchor.constraint(equalTo: self.infoStackView.trailingAnchor)
-            let buttonBottomConstraint = self.setStatusButton.bottomAnchor.constraint(equalTo: self.bottomAnchor)
+            let stackViewTopConstraint = self.infoStackView.topAnchor.constraint(equalTo: self.topAnchor, constant: 16)
+            let stackViewLeadingConstraint = self.infoStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16)
+            let stackViewTrailingConstraint = self.infoStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16)
+
+            let avatarImageViewWidthConstraint = self.avatarImageView.widthAnchor.constraint(equalToConstant: 100)
+            let avatarImageViewHeightConstraint = self.avatarImageView.heightAnchor.constraint(equalToConstant: 100)
+
+            let buttonTopConstraint = self.setStatusButton.topAnchor.constraint(equalTo: self.textField.bottomAnchor, constant: 16)
+            let buttonLeadingConstraint = self.setStatusButton.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16)
+            let buttonTrailingConstraint = self.setStatusButton.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16)
             let buttonHeightConstraint = self.setStatusButton.heightAnchor.constraint(equalToConstant: 50)
-            let topTextConstraint = self.textField.topAnchor.constraint(equalTo: self.infoStackView.bottomAnchor, constant: 10)
-            let leadingTextConstraint = self.textField.leadingAnchor.constraint(equalTo: self.statusLabel.leadingAnchor)
-            let trailingTextConstraint = self.textField.trailingAnchor.constraint(equalTo: self.infoStackView.trailingAnchor)
-            let heightTextConstraint = self.textField.heightAnchor.constraint(equalToConstant: 40)
-            
-            NSLayoutConstraint.activate([topConstraint, leadingConstraint, trailingConstraint, imageViewAspectRatio, buttonTopConstraint, buttonLeadingConstraint, buttonTrailingConstraint, buttonBottomConstraint, buttonHeightConstraint, topTextConstraint, leadingTextConstraint, trailingTextConstraint, heightTextConstraint].compactMap({$0}))
+            let buttonBottomConstraint = self.setStatusButton.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -16)
+
+            let topTextFieldConstraint = self.textField.topAnchor.constraint(equalTo: self.infoStackView.bottomAnchor, constant: 10)
+            let leadingTextFieldConstraint = self.textField.leadingAnchor.constraint(equalTo: self.labelStackView.leadingAnchor)
+            let heightTextFieldConstraint = self.textField.heightAnchor.constraint(equalToConstant: 40)
+            let trailingTextFieldConstraint = self.textField.trailingAnchor.constraint(equalTo: self.labelStackView.trailingAnchor)
+
+            NSLayoutConstraint.activate([ stackViewTopConstraint, stackViewLeadingConstraint, stackViewTrailingConstraint, avatarImageViewWidthConstraint, avatarImageViewHeightConstraint, buttonTopConstraint, buttonLeadingConstraint, buttonTrailingConstraint,  buttonHeightConstraint, buttonBottomConstraint, topTextFieldConstraint, leadingTextFieldConstraint, heightTextFieldConstraint, trailingTextFieldConstraint])
         }
     
     // функция для внесения текста из текстового поля в лейбл статуса
@@ -173,17 +175,16 @@ final class ProfileHeaderView: UIView {
         return clipText
     }
         
-    @objc private func didTapStatusButton() { // функция по редактированию статуса, очень топорная
+    @objc private func didTapStatusButton() {
         self.textField.becomeFirstResponder()
-        self.textField.isHidden.toggle()
-        if self.textField.isHidden {
-            self.setStatusButton.setTitle("Set status", for: .normal)
-            self.textField.endEditing(true)
-        } else {
-            self.textField.text = ""
-            self.setStatusButton.setTitle("Submit", for: .normal)
+        self.setStatusButton.setTitle("Set status", for: .normal)
+        guard textField.text != "" else {
+            textField.vibrate()
+            return
         }
         self.statusLabel.text = statusText
+        self.textField.text = ""
+        self.endEditing(true)
     }
 }
 
@@ -193,5 +194,17 @@ extension ProfileHeaderView: UITextFieldDelegate {
         self.didTapStatusButton()
         textField.resignFirstResponder()
         return true
+    }
+}
+
+extension UIView {
+    func vibrate() {
+    let animation = CABasicAnimation(keyPath: "position")
+    animation.duration = 0.05
+    animation.repeatCount = 5
+    animation.autoreverses = true
+    animation.fromValue = NSValue(cgPoint: CGPoint(x: self.center.x - 5.0, y: self.center.y))
+    animation.toValue = NSValue(cgPoint: CGPoint(x: self.center.x + 5.0, y: self.center.y))
+    layer.add(animation, forKey: "position")
     }
 }

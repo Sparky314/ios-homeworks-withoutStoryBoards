@@ -10,8 +10,6 @@ import UIKit
 class PostViewController: UIViewController {
     
     var post = Post(title: "", author:  "", description: "", image: "", likes: 0, views: 0)
-        
-    private lazy var infoButton = UIBarButtonItem(image: UIImage(systemName: "info.circle"), style: .plain, target: self, action: #selector(clickButton))
     
     private lazy var tableView: UITableView = {
         let table = UITableView(frame: .zero, style: .plain)
@@ -39,8 +37,8 @@ class PostViewController: UIViewController {
     }
     
     override func viewDidLoad() {
+        super.viewDidLoad()
         setupView()
-        self.navigationItem.rightBarButtonItem = infoButton
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -62,12 +60,6 @@ class PostViewController: UIViewController {
             tableViewTrailingConstraint,
             tableViewBottomConstraint
         ])
-    }
-
-    @objc private func clickButton() {  // Действие кнопки
-        let infoViewController = InfoViewController()   // Создаем InfoViewController
-        infoViewController.modalPresentationStyle = .automatic  //  должен показаться модально
-        present(infoViewController, animated: true, completion: nil) // Вызываем InfoViewController
     }
 }
 

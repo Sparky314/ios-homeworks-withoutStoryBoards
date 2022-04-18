@@ -8,12 +8,14 @@
 import UIKit
 
 class ProfileViewController: UIViewController {
-
+    
+    
     private lazy var profileHeaderView: ProfileHeaderView = {
         let view = ProfileHeaderView(frame: .zero)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
+    
     
     private lazy var tableView: UITableView = {
         let table = UITableView(frame: .zero, style: .plain)
@@ -29,22 +31,26 @@ class ProfileViewController: UIViewController {
             
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.setupNavigationBar()
         self.createTable()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         self.tableView.reloadData()
     }
-        
-    private func setupNavigationBar() {
-        self.navigationController?.navigationBar.isHidden = false
-        self.navigationController?.navigationBar.prefersLargeTitles = true
-        self.navigationItem.title = "Profile"
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: animated)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: animated)
     }
         
     private func createTable() {
         self.view.addSubview(self.tableView)
+        self.tableView.contentInsetAdjustmentBehavior = .never
         
         let tableViewTopConstraint = self.tableView.topAnchor.constraint(equalTo: self.view.topAnchor)
         let tableViewLeadingConstraint = self.tableView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor)
@@ -61,6 +67,7 @@ class ProfileViewController: UIViewController {
 }
 
 extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
+        
     
     //MARK: - UITableViewDataSource
     
@@ -95,7 +102,6 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = ProfileHeaderView()
         headerView.backgroundColor = .systemGray5
-        headerView.heightAnchor.constraint(equalToConstant: 220).isActive = true
         return headerView
     }
     
