@@ -50,7 +50,7 @@ class ProfileViewController: UIViewController {
         
     private func createTable() {
         self.view.addSubview(self.tableView)
-        self.tableView.contentInsetAdjustmentBehavior = .never
+//        self.tableView.contentInsetAdjustmentBehavior = .never
         
         let tableViewTopConstraint = self.tableView.topAnchor.constraint(equalTo: self.view.topAnchor)
         let tableViewLeadingConstraint = self.tableView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor)
