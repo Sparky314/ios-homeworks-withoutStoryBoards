@@ -9,7 +9,7 @@ import UIKit
 
 class PhotosTableViewCell: UITableViewCell {
     
-    lazy var images = PhotosViewController().gallery
+    lazy var images: [UIImage] = (0...20).compactMap { UIImage(named: "\($0)") }
 
     private enum Constant {
         static let itemCount: CGFloat = 4
